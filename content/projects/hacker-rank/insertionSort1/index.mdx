@@ -1,0 +1,86 @@
+---
+fullTitle: Hacker Rank - Insertion Sort 1
+seoTitle: Hacker Rank - Insertion Sort 1
+date: 2019-09-16
+description: >
+    Solution to the insertion sort 1 problem in Hacker Rank, with explanation.
+tags: hacker-rank, python, problem-1, sorting, insertion-sort
+---
+
+# PROBLEM: 
+The problem text can be found at the following link in the Hacker Rank website: https://www.hackerrank.com/challenges/insertionsort1/
+
+A brief overview of the problem has been inserted in the webpage below, directly taken from the Hacker Rank website.
+
+    Functional Description:
+
+    Complete the insertionSort1 function in the editor below. It should print the interim and final arrays, each on a new line.
+
+    insertionSort1 has the following parameter(s):
+
+        n: an integer, the size of arr
+
+        arr: an array of integers to sort
+
+# INTERPRETATION:
+
+This problem assumes the array that is provided is sorted, save for the last element in the array. In the process of sorting this last value in the
+array, we need to print out the array as it continuously becomes sorted. We do not insert this last value back into the array until it is in its correct
+position in the list. Until we find the correct index in the list to store the last value, we will "shift right" the value at the current index in the list
+to the current index - 1 position in the list, and continue traversing the list. To illustrate the correct output of this program, a toy problem is shown below.
+
+## EXAMPLE:
+
+    Input: [2,3,5,6,4]
+    Output:
+        [2,3,5,6,6]
+        [2,3,5,5,6]
+        [2,3,4,5,6]
+
+As can be seen in the above example, we begin at the end of the list, and while the value at the current index - 1 is greater than the last value of the list,
+we shift the value at the current index of the list to the current index - 1 position in the list. When this operation occurs, 
+we print out the new list. We continue this process until we have identified a position in the list (index of 2 in this toy problem) where the last value should
+be stored in this list so that the list is sorted in ascending order. We then print the list out again and the program finishes.
+
+Now that an description in english has been provided, we will provide a pseudocode solution to this problem. To be honest, I did not consider the edge case that is
+documented in the below pseudocode in checking when the current index - 1 is equal to 0 until I had tested it in the editor, and failed. :)
+
+# PSEUDOCODE:
+    Store the last value of the list
+    START LOOP AT THE LAST INDEX IN THE LIST:
+        1. check if the stored last value in the list is less than the value in the list at index current index - 1
+            2. if 1 is satisifed, set the value in the sorted array at the current index to the value of the array at the current index - 1
+            3. (Edge Case) if the current index - 1 is equal to 0, we need to additionally set the value of the list at the current index - 1 to the last value.
+        4. If 1 is not satisifed, we have found the correct position in the list to store the the last value. Set
+            the value of the sorted array at the current index to the last value and exit the loop.
+    END LOOP
+
+Given the complete pseudocode of the algorithm shown above, I will show the coding implementation of that algorithm below. In this instance, the pseudocode maps to
+the coding solution in a fairly straightforward manner, so I won't expound on the actual code itself.
+
+# CODE:
+    # Complete the insertionSort1 function below.
+    def insertionSort1(n, arr):
+        sorted_arr = arr.copy()
+        last_value = arr[-1]
+
+        for idx in range(len(arr)-1, 0, -1):
+            if idx - 1 >= 0:
+                #Sort array in ascending order.
+                if last_value < sorted_arr[idx-1]:
+                    sorted_arr[idx] = sorted_arr[idx-1]
+                    print(''.join([f"{num} " for num in sorted_arr]))
+
+                    if idx - 1 == 0:
+                        sorted_arr[idx-1] = last_value
+                
+                else:
+                    sorted_arr[idx] = last_value
+                    break
+
+        print(''.join([f"{num} " for num in sorted_arr]))
+
+# CONCLUSION:
+
+The algorithm above passes all tests in the hacker rank testing ground for the insertionSort1 function. I hope this explanation helped in understanding the method
+behind the preliminary insertion sort algorithm, and we'll dive into the next aspect of the insertion sort algorithm in the next post.

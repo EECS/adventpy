@@ -14,8 +14,8 @@ function Footer ({siteTitle}){
             </Link>
           </div>
           <div className="column is-one-quarter-desktop is-full-mobile">
-            <Link to="/design-center">
-              Design Center
+            <Link to="/projects">
+              Projects
             </Link>
           </div>
           <div className="column is-one-quarter-desktop is-full-mobile">

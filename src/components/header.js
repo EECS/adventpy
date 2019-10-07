@@ -2,10 +2,10 @@ import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React, { useState } from "react"
 
-function Header ({siteTitle}){
-  const [navBarActive, setNavBarActive] = useState(false);
+function Header({ siteTitle }) {
+  const [navBarActive, setNavBarActive] = useState(false)
 
-  return(
+  return (
     <header>
       <div className="hero-head">
         <nav className="navbar">
@@ -13,16 +13,21 @@ function Header ({siteTitle}){
             <Link className="navbar-item" to="/">
               {siteTitle}
             </Link>
-            <span className={`navbar-burger burger ${navBarActive ? "is-active": ""}`} onClick={() => setNavBarActive(!navBarActive)}>
+            <span
+              className={`navbar-burger burger ${
+                navBarActive ? "is-active" : ""
+              }`}
+              onClick={() => setNavBarActive(!navBarActive)}
+            >
               <span></span>
               <span></span>
               <span></span>
             </span>
           </div>
-          <div className={`navbar-menu ${navBarActive ? "is-active": ""}`}>
+          <div className={`navbar-menu ${navBarActive ? "is-active" : ""}`}>
             <div className="navbar-end">
-              <Link className="navbar-item" to="/design-center">
-                Design Center
+              <Link className="navbar-item" to="/projects">
+                Projects
               </Link>
               <Link className="navbar-item" to="/contact">
                 Contact Us
@@ -32,7 +37,7 @@ function Header ({siteTitle}){
         </nav>
       </div>
     </header>
-  );
+  )
 }
 
 Header.propTypes = {

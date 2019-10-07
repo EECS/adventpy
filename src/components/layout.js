@@ -8,7 +8,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import "bulmaswatch/minty/bulmaswatch.min.css"
+import "bulmaswatch/lumen/bulmaswatch.min.css"
 
 import Header from "./header"
 import Footer from "./footer"

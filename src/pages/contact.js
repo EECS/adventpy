@@ -18,7 +18,11 @@ const Contact = () => (
             Get in touch using the form below!
           </h3>
           <h3 className="title is-3" style={{paddingRight: "10%", paddingLeft: "10%"}}>
-            A testimonial that can be featured on the front-page of the website will get you <span className="has-text-danger">3 months </span> free access to the site!
+            I'm always looking for different project ideas and want this site to be collaborative between the reader (you)
+            and myself!
+          </h3>
+          <h3 className="title is-3" style={{paddingRight: "10%", paddingLeft: "10%"}}>
+            So please don't hesistate and I will respond as soon as I can.
           </h3>
         </div>
       </div>

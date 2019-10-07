@@ -8,16 +8,18 @@ import SEO from "../components/seo"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShareSquare } from "@fortawesome/free-regular-svg-icons";
 
-function DesignCenter({data}) {
+import Euler from "../static/images/Leonhard_Euler.jpg";
 
-  const smps_designs = data.allMdx.edges.map((design) =>{
+function Projects({data}) {
+
+  const projects = data.allMdx.edges.map((design) =>{
     return(
-      <div className="is-centered column is-one-third-desktop is-full-mobile" key={design.node.id}>
+      <div className="is-centered column is-one-half-desktop is-full-mobile" key={design.node.id}>
         <div className="card">
           <div className="card-image">
             <Link to={design.node.fields.slug} style={{textDecoration: "None"}}>
-              <figure className="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image" />
+              <figure className="image">
+                <img src={Euler} alt="Placeholder image" />
               </figure>
             </Link>
           </div>
@@ -64,13 +66,13 @@ function DesignCenter({data}) {
               <div className="column is-full">
                 <h1 className="title is-1 has-text-centered">
                   <u>
-                    Design Center
+                    Projects Hub
                   </u>
                 </h1>
               </div>
             </div>
             <div className="columns is-centered">
-              {smps_designs}
+              {projects}
             </div>
           </div>
         </section>
@@ -78,10 +80,10 @@ function DesignCenter({data}) {
   );
 }
 
-export default DesignCenter
+export default Projects
 
 export const pageQuery = graphql`
-  query SMPSQuery{
+  query ProjectsQuery{
     allMdx {
       edges {
         node {

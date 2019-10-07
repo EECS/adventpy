@@ -1,9 +1,8 @@
 import React from "react"
+import {Link} from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-
-import Features from "../components/Features"
 
 const IndexPage = () => (
   <Layout>
@@ -12,22 +11,21 @@ const IndexPage = () => (
       <div className="hero-body">
         <div className="container">
           <h1 className="title">
-            Complex circuit design in 5 minutes.
+            Adventures in Python 
           </h1>
           <h2 className="subtitle">
-            Tailor-made for the professional to the hobbyist.
+            Projects for the Python programming language.
           </h2>
           <div style={{paddingTop: "2em"}}>
-            <a className="button is-primary is-outlined is-large">Sign-up</a>
+            <Link to="projects">
+              <button className="button is-primary is-outlined is-large">
+                Projects 	&rarr;
+              </button>
+            </Link>
           </div>
         </div>
       </div>
     </section>
-    <div class="container">
-      <div>
-        <Features />
-      </div>
-    </div>
     
   </Layout>
 )

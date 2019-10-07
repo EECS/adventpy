@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `dEEsign Electronics`,
-    description: `A site for electronics design.`,
+    title: `AdventPy`,
+    description: `A site for python projects`,
     author: `Jacob Shannon`,
   },
   plugins: [

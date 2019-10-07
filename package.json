@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-deesign-electronics",
+  "name": "adventpy",
   "private": true,
-  "description": "A site for developing electronics.",
+  "description": "A site for python projects.",
   "version": "0.1.0",
   "author": "Jacob Shannon jacobshnn@gmail.com",
   "dependencies": {

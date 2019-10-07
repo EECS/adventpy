@@ -24,19 +24,22 @@ function ContactForm(props){
           <div className="field">
             <label className="label">Name</label>
             <div className="control">
-                <Field name="name" className="input" type="text" placeholder="Enter name here."/>
+              <Field name="name" render={({field}) => (
+                <input {...field} name="name" type="text" className="input" placeholder ="Enter name here." />
+              )}/>
+              {touched.name && (
+                <ErrorMessage name="name">
+                  {msg => <p className="has-text-danger">{msg}</p>}
+                </ErrorMessage>
+              )}
             </div>
-            {touched.name && (
-              <ErrorMessage name="name">
-                {msg => <p className="has-text-danger">{msg}</p>}
-              </ErrorMessage>
-            )}
           </div>
-
           <div className="field">
             <label className="label">Email</label>
             <div className="control">
-              <Field name="email" className="input" type="email" placeholder="Enter email here." />
+              <Field name="email" render={({field}) => (
+                  <input {...field} name="email" type="email" className="input" placeholder ="Enter email here." />
+                )}/>
             </div>
             {touched.email && (
               <ErrorMessage name="email">
@@ -48,8 +51,8 @@ function ContactForm(props){
           <div className="field">
             <label className="label">Message</label>
             <div className="control">
-                <Field name="message" className="textarea" render={({field}) => (
-                  <textarea {...field} className="textarea" placeholder ="Enter message here." />
+                <Field name="message" render={({field}) => (
+                  <textarea {...field} name="message" className="textarea" placeholder ="Enter message here." />
                 )}/>
             </div>
             {touched.message && (

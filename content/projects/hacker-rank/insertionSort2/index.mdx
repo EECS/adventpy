@@ -1,0 +1,126 @@
+---
+fullTitle: Hacker Rank - Insertion Sort 2
+seoTitle: Hacker Rank - Insertion Sort 2
+date: 2019-10-08
+description: >
+  Solution to the insertion sort 2 problem in Hacker Rank, with explanation.
+tags: hacker-rank, python, problem-2, sorting, insertion-sort
+---
+
+# PROBLEM:
+
+The problem text can be found at the following link in the Hacker Rank website <a href="https://www.hackerrank.com/challenges/insertionsort2/" target="_blank">here.</a>
+
+A brief overview of the problem has been inserted in the webpage below, directly taken from the Hacker Rank website.
+
+    Overview:
+
+    In Insertion Sort Part 1, you inserted one element into an array at its correct sorted position.
+    Using the same approach repeatedly, can you sort an entire array?
+
+    Guideline: You already can place an element into a sorted array. How can you use that code to build
+    up a sorted array, one element at a time? Note that in the first step, when you consider an array with
+    just the first element, it is already sorted since there's nothing to compare it to.
+
+    In this challenge, print the array after each iteration of the insertion sort, i.e., whenever the next element
+    has been inserted at its correct position. Since the array composed of just the first element is already sorted,
+    begin printing after placing the second element.
+
+    Functional Description:
+
+    Complete the insertionSort2 function in the editor below. At each iteration, it should print the array as
+    space-separated integers on a separate line.
+
+    insertionSort2 has the following parameter(s):
+
+        n: an integer representing the length of the array
+
+        arr: an array of integers
+
+# INTERPRETATION:
+
+This problem is the next iteration of the problem that was seen <a href="../insertionSort1" target="_blank">here</a>. In this problem, we do not assume anything about the
+given array that needs to be sorted. Fundamentally, we will draw upon the solution seen previously but we will update it slightly so that it can generalize to
+an array that may be entirely unsorted. Let's begin with a toy example seen below.
+
+## EXAMPLE:
+
+    Input:
+        [3,4,7,5,6,2,1]
+    Output:
+        [3,4,7,5,6,2,1]
+        [3,4,7,5,6,2,1]
+        [3,4,5,7,6,2,1]
+        [3,4,5,6,7,2,1]
+        [2,3,4,5,6,7,1]
+        [1,2,3,4,5,6,7]
+
+In this problem, we want to begin our search through the list at an index of 1, as the value at index 0 is by definition sorted as there are no values prior
+to it in the list. At index 1, we see that the value of 4 is sorted is compared to all previous values in the list (3), so we do not want to move it in the list
+and we print the list out and continue our traversal at the next element.
+
+Again at index 2 we receive a value of 7 that is sorted as compared to all previous values in the list (3, 4), so once again we print the list out and continue
+our traversal. At index 3, we receive a value of 5, which is not sorted with respect to the value at index 2 in the list (7). To sort this value, we want to
+shift all values in the list beginning with the value (7) that is greater than our current value in the list (5), and ending the shifting at our current value
+in the list (5).
+
+When this shifting is completed, we then insert the the our current value (5) at the index where the shifting began in the list. Once this operation of shifting
+and replacing is complete, we then print the list out and continue our traversal.
+
+This process iterates until all elements in the list are sorted. Given this written description, we will start to make it more concrete with pseudocode seen below.
+
+# PSEUDOCODE:
+
+    Create variable idx to track our current index in the list
+    Set idx to 1 (as the value at idx 0 in the list is sorted by default)
+    WHILE IDX < LENGTH OF INPUT LIST:
+        START LOOP (For all values i in the sequence to idx, do the following)
+            1. if the number at idx is less than the number at idx, move to 2
+                2. Store the value at arr[idx]
+                3. shift all values to the right from i to idx in the original input list
+                4. Insert the value stored in step 2 at index i in the array
+                5. Break out of the loop and move to the next element to
+                   be sorted in the list
+        END LOOP
+
+        Increment idx by 1 and continue while loop
+    END WHILE
+
+Given the complete pseudocode of the algorithm shown above, I will show the coding implementation of that algorithm below. A separate function to shift
+the necessary values right per the algorithm above has been implemented as well. Additionally, a variable "printed" can be seen in the function
+"insertionSort2" that tracks whether or not a sorting operation has been made, and likewise printed to the terminal throughout the algorithm.
+
+It is also important to note that the code seen below, specifically in the "shift_right" function, takes advantage of the fact that
+lists in python are passed between functions as pointers. Thus, the list does not need to be returned from the "shift_right" function
+and the local modification to the list done in that function will propagate upwards to the "insertionSort2" function that called it.
+
+# CODE:
+
+    def shift_right(arr, start_idx, end_idx):
+        for index in range(end_idx, start_idx, -1):
+            arr[index] = arr[index-1]
+
+    # Complete the insertionSort2 function below.
+    def insertionSort2(n, arr):
+        idx = 1
+
+        while idx < len(arr):
+            printed = False
+            for i in range(idx):
+                if arr[idx] < arr[i]:
+                    sort_val = arr[idx]
+                    shift_right(arr, i, idx)
+                    arr[i] = sort_val
+                    printed = True
+                    print(''.join([f"{num} " for num in arr]))
+                    break
+
+            if not printed:
+                print(''.join([f"{num} " for num in arr]))
+
+            idx += 1
+
+# CONCLUSION:
+
+The algorithm above passes all tests in the hacker rank testing ground for the insertionSort2 function. I hope this explanation helped in understanding the method
+behind the insertion sort algorithm. We will continue our exploration of sorting algorithms in future blog posts.

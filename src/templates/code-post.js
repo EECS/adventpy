@@ -12,6 +12,7 @@ const shortcodes = {
   h2: props => <h2 className="subtitle is-5 is-primary" {...props} />,
   p: props => <p style={{ margin: "1%", fontSize: "20px" }} {...props} />,
   main: props => <main className="box" {...props} />,
+  Link,
 }
 
 class CodePostTemplate extends React.Component {

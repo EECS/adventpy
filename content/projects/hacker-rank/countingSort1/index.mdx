@@ -47,14 +47,15 @@ into the code and dissect it.
 
 # EXPLANATION:
 
-Line 1 of the program begins by defining a constant n at 100. This is a constraint in the problem and is a safe assumption in this context,
-however this would need to be updated if the maximum number in the array arr could be greater than 100 (technically 99).
+Line 1 of the program begins by defining a constant n at 100. n represents the maximum value that
+can be seen in the array arr. This is a constraint in the problem and is a safe assumption in this context,
+however this would need to be updated if the maximum number in the array arr could be greater than or equal to 100.
 
 Next, we create a dictionary "counts", using python's dictionary comprehension convention, where the key is an integer in the range from
 [0, 100) (100 is not included for those unfamiliar with this convention), and the value is set to 0. The value in this dictionary for
 each integer key in the dictionary will represent the count of the integer in the passed array arr.
 
-We then loop through every number in the array arr, incrementing the number in the counts dictionary each time it is seen in the array arr.
+We then loop through every number in the array arr, incrementing the number of the integer key in the counts dictionary each time it is seen in the array arr.
 
 Finally, we return a list, using list comprehension, which contains the count of each number seen in the array arr. So, at index 0
 of the returned array we will find the count for the number of 0's in the array arr, etc.

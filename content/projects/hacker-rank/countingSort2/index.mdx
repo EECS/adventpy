@@ -1,0 +1,79 @@
+---
+fullTitle: Hacker Rank - Counting Sort 2
+seoTitle: Hacker Rank - Counting Sort 2
+date: 2019-10-09
+description: >
+  Solution to the counting sort 2 problem in Hacker Rank, with explanation.
+tags: hacker-rank, python, problem-2, sorting, counting-sort
+---
+
+# PROBLEM:
+
+The problem text can be found at the following link in the Hacker Rank website <a href="https://www.hackerrank.com/challenges/countingsort2" target="_blank">here.</a>
+
+This problem is an extension of a problem that we discussed previously, in <a href="./countingSort1" target="_blank">Counting Sort - Part 1.</a>
+
+A brief overview of this problem has been inserted in the webpage below, directly taken from the Hacker Rank website.
+
+    Challenge
+    Given an unsorted list of integers, use the counting sort method to sort the list and then print the sorted list.
+
+    Function Description
+
+    Complete the countingSort function in the editor below. It should return the original array, sorted ascending, as an array of integers.
+
+    countingSort has the following parameter(s):
+
+        arr: an array of integers
+
+# INTERPRETATION:
+
+As with Counting Sort Part 1, this problem seems to be fairly straightforward. As we already solved the previous iteration of the problem,
+and this iteration of the problem is simply an extension of Part 1 of the problem, we'll again jump right into the code solution as seen
+below.
+
+# CODE:
+
+    # Complete the countingSort function below.
+    def countingSort(arr):
+        #To be more flexible with input lists, even though n is
+        #100 in this problem.
+        n = max(arr)
+        counts = {num: 0 for num in range(n+1)}
+
+        for num in arr:
+            counts[num] += 1
+
+        sorted_arr = []
+
+        for num in range(n+1):
+            instances = counts[num]
+            if instances > 0:
+                sorted_arr.extend([num]*instances)
+
+        return sorted_arr
+
+# EXPLANATION:
+
+In this iteration, we begin by defining n as the maximum value in array arr. As in the previous problem, we do have a problem constraint
+that n is less than 100, however in an attempt to generalize this solution slightly, we define n based upon the elements in the array.
+
+In this particular implementation, n could be larger than 100 and the code would execute correctly.
+
+Moving on, we again create a counts dictionary using python's dictionary comprehension, where the keys are all integers in the range [0, n],
+and the values represent the amount of times that each integer is seen in the array arr. This value is initialized to 0 upon creation for
+all integers in the said range.
+
+We then loop through all numbers in the array arr, determining the count for each number in that array.
+
+Finally, the newer piece of functionality is seen in the last "for" loop of the function. We once again iterate over all integers
+in the range [0, n], determining the number of instances of the integer in array arr.
+
+As long as that instance is greater than 0, we append the integer to the sorted_arr list an "instances" number of times. Because
+we loop through the numbers from [0,n] in an ascending order, we are guaranteed to return a list of sorted values in ascending
+order.
+
+# CONCLUSION:
+
+The algorithm above passes all tests in the hacker rank testing ground for the countingSort2 function. We will continue our
+exploration of sorting algorithms in future posts. Have a great day!

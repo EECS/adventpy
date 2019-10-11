@@ -29,6 +29,9 @@ function Header({ siteTitle }) {
               <Link className="navbar-item" to="/projects">
                 Projects
               </Link>
+              <Link className="navbar-item" to="/apps">
+                Apps
+              </Link>
               <Link className="navbar-item" to="/contact">
                 Contact Us
               </Link>

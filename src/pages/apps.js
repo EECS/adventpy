@@ -10,8 +10,8 @@ import { faShareSquare } from "@fortawesome/free-regular-svg-icons"
 
 import Euler from "../static/images/Leonhard_Euler.jpg"
 
-function Projects({ data }) {
-  const projects = data.allMdx.edges.map(design => {
+function Apps({ data }) {
+  const apps = data.allMdx.edges.map(design => {
     const maxDesc = 80
     let description = design.node.frontmatter.description
     if (description.length > maxDesc) {
@@ -20,7 +20,7 @@ function Projects({ data }) {
     }
 
     return (
-      <div className="column is-one-third is-full-mobile" key={design.node.id}>
+      <div className="column is-full-mobile" key={design.node.id}>
         <div className="card">
           <div className="card-image">
             <Link
@@ -83,24 +83,24 @@ function Projects({ data }) {
           <div className="columns">
             <div className="column is-full">
               <h1 className="title is-1 has-text-centered">
-                <u>Projects Blog</u>
+                <u>Applications</u>
               </h1>
             </div>
           </div>
-          <div className="columns is-centered is-multiline">{projects}</div>
+          <div className="columns is-centered is-multiline">{apps}</div>
         </div>
       </section>
     </Layout>
   )
 }
 
-export default Projects
+export default Apps
 
 export const pageQuery = graphql`
-  query ProjectsQuery {
+  query AppQuery {
     allMdx(
       sort: { fields: frontmatter___date, order: DESC }
-      filter: { fields: { slug: { regex: "/projects/" } } }
+      filter: { fields: { slug: { regex: "/apps/" } } }
     ) {
       edges {
         node {

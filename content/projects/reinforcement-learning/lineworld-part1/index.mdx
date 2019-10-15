@@ -1,0 +1,185 @@
+---
+fullTitle: Reinforcement Learning - LineWorld Part 1
+seoTitle: Reinforcement Learning - LineWorld Part 1
+date: 2019-10-14
+description: >
+  A basic reinforcement learning problem called LineWorld,
+  Q-learning and SARSA are applied to a beginner problem to 
+  understand the building blocks of reinforcement learning.
+tags: reinforcement-learning, python, q-learning, pathfinding
+---
+
+# PROBLEM:
+
+I've recently been following an excellent GitHub project, seen <a href="https://github.com/andri27-ts/Reinforcement-Learning" target="_blank">here</a>, that
+aims to teach people the concept of (deep) reinforcment learning in 8 weeks.
+
+Working through the first several weeks of the course, and in an attempt to cement the learning that I have done so far, I am going to
+recreate the "GridWorld" application here (seemingly the "Hello World" of the reinforcement learning discipline), except a simpler variant
+that I call "LineWorld".
+
+This first post is going to focus on the code for LineWorld itself. Future posts will cover our agents that interact with the world, as
+well as a post that will detail the training and learning code that the agent will use to understand the world that it is interacting with.
+
+Digging into the LineWorld environment, our world is a simple 1-Dimensional one, with "blocks" that are represented as "dashes" for a path in the world,
+a "T" to mark the treasure location in the world, and an "o" that will represent the agent's current location in the world.
+
+In this world, the agent's objective is to reach the treasure as quickly as possible, which will be placed in the world as far away as possible
+from the agent's starting location. To give a visual example of this, I have created a world that is 5 units long, with the treasure located
+on the right hand-side of the world:
+
+    o---T
+
+The environment will also be created such that the treasure can be on either side of the world (right or left), and the amount of blocks representing
+the size of the world is variable. An environment below represents a world that is 10 blocks in size with the treasure existing on the left hand-side
+of the world.
+
+    T--------o
+
+Now that you have an understanding of the layout of the world, let's step through the code that generates LineWorld below.
+
+# CODE:
+
+    class LineWorld:
+        def __init__(self, blocks=5, end_side="right"):
+            self.blocks = blocks
+            self.states = blocks
+            # Can move left or right
+            self.actions = 2
+            self.end_side = end_side
+            self.current_position = self.reset()
+            self.end_position = blocks-1 if end_side == "right" else 0
+
+        def reset(self):
+            self.current_position = 0 if self.end_side == "right" else self.blocks-1
+
+            return self.current_position
+
+        def render(self):
+            self.world = list("-"*self.blocks)
+            self.world[self.end_position] = "T"
+            self.world[self.current_position] = "o"
+
+            restart_line()
+            sys.stdout.write("".join(self.world))
+            time.sleep(75/1000)
+
+        def step(self, action):
+            reward = -1
+            done = False
+
+            # Go left
+            if action == 0:
+                if self.current_position > 0:
+                    if self.current_position - 1 == self.end_position:
+                        done = True
+                        reward = 1
+                    else:
+                        self.current_position -= 1
+
+            # Go right
+            if action == 1:
+                if self.current_position < self.blocks - 1:
+                    if self.current_position + 1 == self.end_position:
+                        done = True
+                        reward = 1
+                    else:
+                        self.current_position += 1
+
+            # Appending 0 for the "info" position in the openai gym
+            # convention
+            return self.current_position, reward, done, 0
+
+# EXPLANATION:
+
+Let's go through this world by sections.
+
+    def __init__(self, blocks=5, end_side="right"):
+        self.blocks = blocks
+        self.states = blocks
+        # Can move left or right
+        self.actions = 2
+        self.end_side = end_side
+        self.current_position = self.reset()
+        self.end_position = blocks-1 if end_side == "right" else 0
+
+We first initialize our world with a given amount of blocks and an ending side where the treasure will exist in this
+specific instance of the world.
+
+We define an internal "actions" attribute to the LineWorld class, setting its value to 2
+as there are only two actions for this specific world, moving right or moving left. It is possible that a third action
+of "No Movement" could be defined, but for this world I have decided to keep it even simpler and ensure the agent
+moves in a specific direction at each time step.
+
+We define a current position attribute, which will be set to an integer based upon the reset method as discussed
+below, as well as an end position attribute. This will be set to 0 if the treasure is on the left hand-side, and
+to the size of the world minus one if the treasure is located on the right hand-side of the world (as our world is
+fundamentally 0-index based duh).
+
+    def reset(self):
+        self.current_position = 0 if self.end_side == "right" else self.blocks-1
+
+        return self.current_position
+
+    def render(self):
+        self.world = list("-"*self.blocks)
+        self.world[self.end_position] = "T"
+        self.world[self.current_position] = "o"
+
+        restart_line()
+        sys.stdout.write("".join(self.world))
+        time.sleep(75/1000)
+
+Next, we define two methods for the LineWorld class, the reset method as well as the render method. The reset method is rather simple.
+On reset, it sets the current position of the agent to the opposite side of the location of the treasure in the world.
+
+The render method creates a world attribute for the LineWorld class, which is a list whose length is equal to the number of blocks in the
+world. It then sets the end position index to the treasure signifier, and the current position of the agent to the agent's signifier,
+prior to writing the environment to the terminal and displaying the current state of the world.
+
+    def step(self, action):
+        reward = -1
+        done = False
+
+        # Go left
+        if action == 0:
+            if self.current_position > 0:
+                if self.current_position - 1 == self.end_position:
+                    done = True
+                    reward = 1
+                else:
+                    self.current_position -= 1
+
+        # Go right
+        if action == 1:
+            if self.current_position < self.blocks - 1:
+                if self.current_position + 1 == self.end_position:
+                    done = True
+                    reward = 1
+                else:
+                    self.current_position += 1
+
+        # Appending 0 for the "info" position in the openai gym
+        # convention
+        return self.current_position, reward, done, 0
+
+Finally, we define a step method for the LineWorld class. This method takes an "action" parameter, which is an integer value representing
+an action that the agent can take in the world. As can be seen in the comments of the code, an action value of "1" represents a movement
+to the right, and an action value of "0" represents a movement to the left.
+
+It is important to note that these conventions are arbitrary. These action values could be interchanged and there would be no affect to
+the environment itself (it would affect the agent's Q-table, more on that in the next post).
+
+The step method will return the current position of the agent, after movement, as well as any particular reward that the agent received
+for that movement as well as a done flag if the agent has found the treasure.
+
+At the outset of the function, the reward flag is set to -1 and the done flag is set to false. Each time step that the agent does not
+find the treasure, it will be penalized as seen by this reward value. The only time that the agent can receive a positive reward
+is if the treasure is found.
+
+This will incentivize the agent to find the treasure as quickly as it possibly can. In this world, that is the most important thing. :)
+
+# CONCLUSION:
+
+Now that you have an understanding of the environment that our agent will be placed into, let's discuss the agent's themselves and their
+creation.

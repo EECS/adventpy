@@ -50,7 +50,6 @@ exports.createPages = ({ graphql, actions }) => {
 
     // Create project post pages
     result.data.projects.edges.forEach((post, index) => {
-      console.log(result.data.projects)
       const previous = index === 0 ? null : result.data.projects[index - 1]
       const next =
         index === result.data.projects.length - 1

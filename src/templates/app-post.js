@@ -6,13 +6,14 @@ import { MDXProvider } from "@mdx-js/react"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Partners from "../components/Teachers/Partners"
 
 const shortcodes = {
   h1: props => <h1 className="subtitle is-3 is-primary" {...props} />,
   h2: props => <h2 className="subtitle is-5 is-primary" {...props} />,
   p: props => <p style={{ margin: "1%", fontSize: "20px" }} {...props} />,
   main: props => <main className="box" {...props} />,
-  Link,
+  Partners,
 }
 
 class AppPostTemplate extends React.Component {
@@ -30,14 +31,16 @@ class AppPostTemplate extends React.Component {
             {post.frontmatter.fullTitle}
           </h1>
           <MDXRenderer>{post.body}</MDXRenderer>
-          <br />
-          <br />
-          <Link className="has-text-centered" to="/projects/">
-            <h3 className="subtitle is-3 has-text-link">
-              Go back to the projects page.
-            </h3>
-          </Link>
         </MDXProvider>
+        <br />
+        <br />
+        <div className="is-centered">
+          <p className="has-text-centered">
+            <h3 className="subtitle is-3 has-text-link">
+              <Link to="/apps/">Go back to the applications page.</Link>
+            </h3>
+          </p>
+        </div>
       </Layout>
     )
   }

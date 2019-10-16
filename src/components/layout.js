@@ -27,8 +27,13 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <main>{children}</main>
+      <div
+        className="hero is-fullheight"
+        style={{ justifyContent: "flex-start" }}
+      >
+        <Header siteTitle={data.site.siteMetadata.title} />
+        <main>{children}</main>
+      </div>
       <Footer siteTitle={data.site.siteMetadata.title} />
     </>
   )

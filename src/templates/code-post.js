@@ -30,14 +30,16 @@ class CodePostTemplate extends React.Component {
             {post.frontmatter.fullTitle}
           </h1>
           <MDXRenderer>{post.body}</MDXRenderer>
-          <br />
-          <br />
-          <Link className="has-text-centered" to="/projects/">
-            <h3 className="subtitle is-3 has-text-link">
-              Go back to the projects page.
-            </h3>
-          </Link>
         </MDXProvider>
+        <br />
+        <br />
+        <div className="is-centered">
+          <p className="has-text-centered">
+            <h3 className="subtitle is-3 has-text-link">
+              <Link to="/projects/">Go back to the projects page.</Link>
+            </h3>
+          </p>
+        </div>
       </Layout>
     )
   }

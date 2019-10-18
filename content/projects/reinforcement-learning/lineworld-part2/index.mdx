@@ -1,0 +1,153 @@
+---
+fullTitle: Reinforcement Learning - LineWorld Part 2
+seoTitle: Reinforcement Learning - LineWorld Part 2
+date: 2019-10-18
+description: >
+  A basic reinforcement learning problem called LineWorld,
+  Q-learning and SARSA are applied to a beginner problem to 
+  understand the building blocks of reinforcement learning.
+  The Q-Agent is discussed in this post.
+tags: reinforcement-learning, python, q-learning, pathfinding
+---
+
+# PROBLEM:
+
+Again, this post builds upon an excellent GitHub project that I've been following, seen <a href="https://github.com/andri27-ts/Reinforcement-Learning" target="_blank">here</a>.
+
+This post is the second in the series, with the first post seen previously <a href="../lineworld-part1">here.</a>
+
+This next entry will cover the agent that we will be placing into the world. For this topic, we will be discussing
+Q-Learning, and the Q-Agent that will be created to interact with our world. In a bonus post (can it be a bonus if it's already planned?)
+I will also be discussing an agent that uses the SARSA algorithm to interact with our environment, however the original
+agent created was built to understand the fundamentals of Q-Learning.
+
+Q-Learning is a form of temporal difference learning. This type of learning algorithm uses direct experience with the environment to learn,
+without a model of the behavior of the environment. Because of this, Q-Learning is said to be "off-model". It is also known to be "off-policy"
+because the Q-Agent learning algorithm does not use it's action policy to learn from it's environment (something that may not be clear yet, and was
+not clear to myself until I implemented the SARSA agent).
+
+Instead of running through the pseudocode for Q-learning, I'd like to place some links in this post that discuss it in a clear manner.
+
+Here's a good <a href="https://towardsdatascience.com/qrash-course-deep-q-networks-from-the-ground-up-1bbda41d3677" target="_blank">link</a> that discusses Q-learning,
+the basics of Markov Decision Processes and the update rule for Q-tables in Q-learning based upon the Bellman Equation.
+
+Several cheat sheets can be found <a href="https://github.com/udacity/deep-reinforcement-learning/blob/master/cheatsheet/cheatsheet.pdf" target="_blank">here</a> and <a href="https://github.com/FrancescoSaverioZuppichini/Reinforcement-Learning-Cheat-Sheet/blob/master/rl_cheatsheet.pdf" target="_blank">here</a>
+that discuss the pseudocode for Q-learning.
+
+We will walk through the code for the implementation of the Q-Agent below, but I first wanted to highlight the update rule for the Q-table as it
+is the most important aspect of Q-learning. The equation for updating the Q-table after an action is taken in a state, and a reward is received from
+that action, is seen below:
+
+<code style={{ color: "black", width: "100%", fontSize: "2rem" }}>
+  Q(s,a) = Q(s,a) + &alpha;*[r + &gamma;*max(Q(s', a') | a') - Q(s,a)]
+</code>
+
+This seems like a complex equation, but the actual coding implementation is not difficult and when it is broken down, the update rule is rather simple.
+After taking an action a in state s, we update the Q value in the table at state s for action a, seen in the equation as Q(s,a). This updated
+value is equal to the current value of Q(s,a) in addition to the learning rate, denoted as alpha (&alpha;), multiplied by the expected reward
+in the next state.
+
+The expected reward in the next state is taken as the reward, r, received by taken action a in state s, plus a discount factor gamma (&gamma;) multipled
+by the action in the next state Q(s',a') that generates the maximum reward when taken in the next state s'.
+We then subtract the current Q(s,a) value from this discounted maximum reward, completing the equation.
+
+This equation is the Bellman equation as discussed above. The off-policy nature of Q-learning can be seen in this equation as well. Q-learning is said to be
+off-policy because of this component of the equation:
+
+<code style={{ color: "black", width: "100%", fontSize: "2rem" }}>
+  max(Q(s', a') | a')
+</code>
+
+In SARSA, we will see that the update equation is identical to the update equation above, except when we select the next action from the next state, we do so using
+the action policy of the agent, which is usually an &epsilon;-greedy policy. However, in Q-learning we always update the Q table assuming that we
+are following the action in state Q(s',a') that generates the maximum reward for the agent. This differs from the action policy for the Q-Agent, as it will be acting according to the
+&epsilon;-greedy policy. The difference between this learning policy and the update policy is the reasoning behind defining Q-learning as "off-policy".
+
+Let's now talk about the code for the Q-Agent.
+
+# CODE:
+
+    class QAgent:
+        def __init__(self, num_states, num_actions):
+            self.num_states = num_states
+            self.num_actions = num_actions
+            self.gamma = 0.95  # discount reward factor
+            self.epsilon = 1.0  # exploration rate
+            self.epsilon_min = 0.0
+            self.epsilon_decay = 0.95
+            self.alpha = 0.8
+            self.Q = self._makeQtable()
+
+        def _makeQtable(self):
+            table = np.zeros((self.num_states, self.num_actions))
+            return table
+
+        def act(self, state):
+
+            # Explore if random number is less than exploration rate
+            if np.random.rand() <= self.epsilon:
+                return random.randrange(0, self.num_actions, 1)
+            else:
+                return np.argmax(self.Q[state])
+
+        def learn(self, state, action, reward, next_state):
+
+            # Update Q table with next state information
+            Q_next = self.Q[next_state]
+            update = reward + self.gamma*max(Q_next) - self.Q[state, action]
+            self.Q[state, action] = self.Q[state, action] + self.alpha*update
+
+# EXPLANATION:
+
+First, we've defined our initialization scheme of the Q-Agent as seen below:
+
+    def __init__(self, num_states, num_actions):
+            self.num_states = num_states
+            self.num_actions = num_actions
+            self.gamma = 0.95  # discount reward factor
+            self.epsilon = 1.0  # exploration rate
+            self.epsilon_min = 0.0
+            self.epsilon_decay = 0.95
+            self.alpha = 0.8
+            self.Q = self._makeQtable()
+
+        def _makeQtable(self):
+            table = np.zeros((self.num_states, self.num_actions))
+            return table
+
+We set the number of states and actions as it relates to the agent here, which is specific to the environment that the agent is placed.
+We then set the hyperparameters of the model, gamma, epsilon, the minimum epsilon and the decay rate for epsilon as the agent trains.
+These values are set to fairly standard values for this agent.
+
+We finally set the learning rate alpha, again to a fairly standard value of 0.8, and we create the Q-table of the agent. This Q-table
+is originally initialized to all 0's, given the amount of states and actions of our environment.
+
+    def act(self, state):
+
+            # Explore if random number is less than exploration rate
+            if np.random.rand() <= self.epsilon:
+                return random.randrange(0, self.num_actions, 1)
+            else:
+                return np.argmax(self.Q[state])
+
+        def learn(self, state, action, reward, next_state):
+
+            # Update Q table with next state information
+            Q_next = self.Q[next_state]
+            update = reward + self.gamma*max(Q_next) - self.Q[state, action]
+            self.Q[state, action] = self.Q[state, action] + self.alpha*update
+
+We the define the action and learning methods for our agent. The act method implements the &epsilon;-greedy strategy as discussed above.
+Basically, each time the agent is asked to take an action, we generate a random number. If epsilon is greater than that random number,
+we take a random action in the current state, else we take the action in the state that generates the maximum reward in that state.
+
+This action policy is an attempted solution for the exploration vs. exploitation problem in reinforcement learning, where we want our
+agent to continue to find new information in the world even when we think we have an understanding of it already.
+
+The learning method implements the update equation that we discussed above, and again is an implementation of the Bellman equation.
+
+# CONCLUSION:
+
+As can be seen, there are not many lines of code needed to create a Q-Agent class that implements Q-learning. Now that we have
+the Q-Agent defined, as well as an environment for the agent to learn from, we will now discuss the training loop for our agent
+to get experience from the world, and solve the LineWorld environment in as few moves as possible.

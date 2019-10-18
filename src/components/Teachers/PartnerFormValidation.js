@@ -2,6 +2,7 @@ import * as Yup from "yup"
 
 export const getYupValidationSchema = Yup.object().shape({
   classSize: Yup.number()
+    .typeError("The class size must be a number.")
     .integer("Class size must be a whole number.")
     .min(
       2,
@@ -12,6 +13,7 @@ export const getYupValidationSchema = Yup.object().shape({
   studentNumbers: Yup.array().of(
     Yup.object().shape({
       id: Yup.number()
+        .typeError("The student number must be a number.")
         .integer("Student number must be a whole number.")
         .min(1, "The minimum student number is 1.")
         .max(100, "The maximum student number is 100.")

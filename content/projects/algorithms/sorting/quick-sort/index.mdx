@@ -1,0 +1,52 @@
+---
+fullTitle: Algorithms - Quick Sort
+seoTitle: Algorithms - Quick Sort
+date: 2019-10-21
+description: >
+  Sorting algorithm series, this post covers the quick sort algorithm,
+  a fundamental sorting algorithm with a relatively simple implementation
+  in python.
+tags: sorting, python, quick-sort, time-complexity
+---
+
+# ALGORITHM:
+
+After working on many Hacker Rank problems, I wanted to delve into more general algorithm and data structure problems, regardless of
+whether they are listed on the hacker rank website. This first post will discuss the quick sort algorithm, it's time complexity and
+implementation in python.
+
+# Time Complexity: Worst: O(n<sup>2</sup>) Best: O(<i>n</i>lg<i>n</i>) Average: O(<i>n</i>lg<i>n</i>)
+
+The quick sort algorithm is a recursive algorithm. It begins by selecting a pivot point in the list of numbers that is to be sorted,
+and then it sorts the list by dividing the original list into smaller sublists. These sublists contain elements of the original
+list that are greater than the pivot, less than the pivot, and equal to the pivot.
+
+For all numbers in the list that are greater than the pivot, or less than the pivot, the quick sort algorithm is called recursively
+on the sublists and those lists are then sorted using the same algorithm.
+
+On average, the quick sort algorithm has a time complexity of O(<i>n</i>lg<i>n</i>) as each functional call will be sorting a
+list of n/2 elements in length. At worst, if the pivot selected is greater than all other elements in the list, then the algorithm
+will have a time complexity of O(n<sup>2</sup>) as the list to be sorted stays at length n, as compared to being reduced to n/2 on the
+average case.
+
+The code below implements the quick sort algorithm as described above. If you want more information on the quick sort algorithm,
+see the link <a href="https://www.interviewcake.com/sorting-algorithm-cheat-sheet" target="_blank">here.</a>
+
+# CODE:
+
+    def quicksort(arr):
+        if len(arr) == 1 or len(arr) == 0:
+            return arr
+
+        pivot = arr[len(arr)-1]
+
+        left = [x for x in arr if x < pivot]
+        mid = [x for x in arr if x == pivot]
+        right = [x for x in arr if x > pivot]
+
+        return quicksort(left) + mid + quicksort(right)
+
+# CONCLUSION:
+
+This post talked about the quick sort algorithm, a fundamental sorting algorithm with a relatively simple python implementation.
+We will continue to discuss sorting algorithms in future posts.

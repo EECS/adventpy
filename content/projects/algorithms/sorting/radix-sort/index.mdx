@@ -1,0 +1,104 @@
+---
+fullTitle: Algorithms - Radix Sort
+seoTitle: Algorithms - Radix Sort
+date: 2019-10-22
+description: >
+  Sorting algorithm series, this post covers the radix sort algorithm,
+  a sorting algorithm that achieves O(n) time complexity given specific
+  inputs.
+tags: sorting, python, radix-sort, time-complexity
+---
+
+# ALGORITHM:
+
+In continuing our series on algorithms, specifically sorting algorithms, we will be discussing radix sort in this
+post. The previous sorting algorithm discussed, quick sort, can be seen in the post <a href="../quick-sort" target="_blank">here.</a>
+
+This sorting algorithm can achieve O(n) time complexity given the element range in the list is much smaller
+than the length of the list itself.
+
+A good cheat sheet for the running time of the radix sort algorithm can be found <a href="https://www.interviewcake.com/sorting-algorithm-cheat-sheet" target="_blank">here.</a>
+
+For a good explanation regarding the workings of radix sort, as well as a good breakdown of its running time complexity, see <a href="https://www.geeksforgeeks.org/radix-sort/" target="_blank">here.</a>
+
+# Time Complexity: Worst: O(n) Best: O(n) Average: O(n)
+
+In some short words, I will describe the algorithm behind radix sort. The radix sort algorithm builds upon the counting sort algorithm, but does so by
+counting significant digits of each number in the input list, as compared to counting each instance of numbers in the list.
+
+To make this more concrete, I will run through an example. We start with a list, seen below:
+
+    [100, 23, 35, 46, 15, 2]
+
+When we run our radix sort, we sort the list by the current signficant digit position for our sort, i.e. at the "1's" place for
+each number on this first pass. This looks as so after this pass:
+
+    [100, 2, 23, 35, 15, 46]
+
+Whereever there are multiple numbers with the same significant digit to be sorted (15 and 35 in the "1's" place instance), the first digit in the
+list will be seen first in the newly sorted list. Now to sort the "10's" place:
+
+    [100, 2, 15, 23, 35, 46]
+
+Again, we see that 100 and 2 have a conflict as both have a sorted signficant digit of 0, so 100 comes first in the newly sorted list as it was the
+first number in the previously sorted list. Finally, we sort by the "100's" place:
+
+    [2, 15, 23, 35, 46, 100]
+
+All numbers except for 100 have a sorted digit of 0, so all of them can be seen in the list in the order they were sorted in previously, with 100
+now placed at the end of the list. On each sorting pass through the list, we guarantee that the resulting sorted list is sorted from the
+perspective of the sorted significant digit. Onto the code.
+
+# CODE:
+
+    def radix_sort(arr):
+      sorted_array = [0] * len(arr)
+      count_array = [0]*10
+
+      def get_digit(num, n):
+          '''
+          Gets the nth digit in a number num.
+          n (int): 1 returns 1's place of num, 2 returns 10's place
+          of num, etc.
+          '''
+          return num // 10**(n-1) % 10
+
+      sorted = False
+      digit_place = 1
+
+      while not sorted:
+          sorted = True
+
+          for num in arr:
+              digit = get_digit(num, digit_place)
+              if digit != 0:
+                  sorted = False
+
+              count_array[digit] += 1
+
+          # Adds positioning for digits in count_array.
+          # e.g. small list [3, 2, 1] representing 3 0's,
+          # 2 1's, 1 2. The output list would be [3, 5, 6]
+          # Then the sorted array can be built in reverse order
+          for digit in range(1, 10):
+              count_array[digit] += count_array[digit - 1]
+
+          for current_number in arr[::-1]:
+              index = get_digit(current_number, digit_place)
+              sorted_array[count_array[index]-1] = current_number
+              count_array[index] -= 1
+
+          # print(sorted_array)
+          digit_place += 1
+          arr = sorted_array
+          count_array = [0]*10
+
+      return sorted_array
+
+The comment in the above code at line "# print(sorted_array)" can be removed to see how the list is sorted at each specific
+significant digit during the sorting process.
+
+# CONCLUSION:
+
+This post talked about the radix sort algorithm, a different approach to sorting algorithms that allows for sorting in
+O(n) time given input lists that satisfy specific conditions.

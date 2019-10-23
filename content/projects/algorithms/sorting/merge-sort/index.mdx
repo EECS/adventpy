@@ -1,0 +1,90 @@
+---
+fullTitle: Algorithms - Merge Sort
+seoTitle: Algorithms - Merge Sort
+date: 2019-10-23
+description: >
+  Sorting algorithm series, this post covers the merge sort algorithm,
+  a fundamental comparison sorting algorithm that achieves worst-case
+  O(n*lgn) time-complexity during execution.
+tags: sorting, python, merge-sort, time-complexity
+---
+
+# ALGORITHM:
+
+Now that radix sort has been solved, let's talk about another fundamental sorting algorithm, merge sort.
+You can see our previous discussion on radix sort in this post <a href="../radix-sort" target="_blank">here.</a>
+
+This sorting algorithm can achieve O(<i>n</i>lg<i>n</i>) time complexity in the worst-case scenario.
+
+A good cheat sheet for the running time of the merge sort algorithm can be found <a href="https://www.interviewcake.com/sorting-algorithm-cheat-sheet" target="_blank">here.</a>
+
+For a good explanation regarding the workings of merge sort, as well as a good breakdown of its running time complexity, see <a href="https://www.geeksforgeeks.org/radix-sort/" target="_blank">here.</a>
+
+# Time Complexity: Worst: O(<i>n</i>lg<i>n</i>) Best: O(<i>n</i>lg<i>n</i>) Average: O(<i>n</i>lg<i>n</i>)
+
+Once again I'll give a brief summary of what the algorithm does in as simple of terms that I can muster. Hopefully this gives you a good
+understanding of what is happening in this sorting algorithm, and also cements my understanding of this algorithm.
+
+Merge sort is a recursive sorting algorithm. It begins by selecting a pivot point in the passed list, and can
+be seen in the code below as selecting the middle element in the list as the pivot.
+
+This divides the input list into a "left-half" list and a "right-half" list. Once these two sublists are created,
+we call the merge sort function again on each respective sublist. This will guarantee, with the base case
+function seen in the below code, that when we build up our left and right sublists for sorting, the left
+sublist will be sorted with respective to itself, and the right sublist will be sorted with respect to itself.
+
+To conduct a brief thought experiment, imagine this function is called and it is executing through its first pass.
+The left and right sublists will be created such that, at the maximum depth in their functions, the left
+and right sublists are either 1 or 0 elements in length. Given that fact, we then sort the left and right
+sublists with respect to those individual elements, and return a sorted array to the left (or right) sublist
+in the function call above.
+
+So, the way to understand this function is to understand that when the "while" loop is executed in the
+code below, it will be sorting left and right sublists that are sorted with respect to themselves. Once
+the elements are sorted with respect to both lists, the function call will return the sorted list
+to the function call above it, until the entire list is sorted.
+
+The best way to understand these ideas is to map the explanation above with the code below.
+
+# CODE:
+
+    def merge_sort(arr):
+        if len(arr) == 1 or len(arr) == 0:
+            return arr
+
+        pivot = len(arr) // 2
+
+        left = merge_sort(arr[:pivot])
+        right = merge_sort(arr[pivot:])
+
+        sorted_array = []
+
+        left_idx = 0
+        right_idx = 0
+
+        while left_idx < len(left) or right_idx < len(right):
+            if left_idx == len(left):
+                sorted_array.extend(right[right_idx:])
+                right_idx = len(right)
+            elif right_idx == len(right):
+                sorted_array.extend(left[left_idx:])
+                left_idx = len(left)
+            else:
+                left_num = left[left_idx]
+                right_num = right[right_idx]
+
+                if left_num < right_num:
+                    sorted_array.append(left_num)
+                    left_idx += 1
+                else:
+                    sorted_array.append(right_num)
+                    right_idx += 1
+
+        return sorted_array
+
+# CONCLUSION:
+
+This post talked about the merge sort algorithm, a fundamental sorting algorithm that allows for
+a worst-case time complexity of O(<i>n</i>lg<i>n</i>), the lower worst-case limit for comparison
+sorting based algorithms. Understanding this sorting algorithm will allow you to understand the
+basis for sorting algorithms in many programming languages.

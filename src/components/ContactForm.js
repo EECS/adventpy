@@ -16,7 +16,11 @@ function ContactForm(props) {
     <div className="columns is-mobile is-centered">
       <div className="column is-three-quarters">
         <form
-          onSubmit={e => (e.preventDefault(), handleSubmit())}
+          action="/contact-thanks"
+          onSubmit={() => {
+            //e.preventDefault()
+            handleSubmit()
+          }}
           method="POST"
           name="contact-form"
           data-netlify="true"
@@ -107,7 +111,6 @@ function ContactForm(props) {
 
 function onSubmit(values, { setSubmitting }) {
   setTimeout(() => {
-    window.location.pathname = "/contact-thanks"
     setSubmitting(false)
   }, 1000)
 }

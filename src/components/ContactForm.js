@@ -1,12 +1,19 @@
 import React from "react"
 
 import { Formik, ErrorMessage, Field } from "formik"
+import { navigate } from "gatsby-link"
 import getYupValidationSchema from "../components/ContactFormValidation"
 
 const initialValues = {
   name: "",
   email: "",
   message: "",
+}
+
+function encode(data) {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&")
 }
 
 function ContactForm(props) {
@@ -21,8 +28,20 @@ function ContactForm(props) {
           method="POST"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
-          onSubmit={() => {
+          onSubmit={e => {
+            e.preventDefault()
             handleSubmit()
+            const form = e.target
+            fetch("/", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: encode({
+                "form-name": form.getAttribute("name"),
+                //...this.state,
+              }),
+            })
+              .then(() => navigate(form.getAttribute("action")))
+              .catch(error => console.error(error))
           }}
         >
           <div className="field">
@@ -119,9 +138,7 @@ function ContactForm(props) {
 }
 
 function onSubmit(values, { setSubmitting }) {
-  setTimeout(() => {
-    setSubmitting(false)
-  }, 1000)
+  setSubmitting(false)
 }
 
 export default function ContactFormContainer() {

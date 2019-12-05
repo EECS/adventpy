@@ -38,7 +38,6 @@ function ContactForm(props) {
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: encode({
                 "form-name": form.getAttribute("name"),
-                "values-name": form.getElementsByTagName("input"),
               }),
             })
               .then(() => navigate(form.getAttribute("action")))
@@ -59,7 +58,6 @@ function ContactForm(props) {
                       className="input"
                       placeholder="Enter name here."
                     />
-                    <input type="hidden" name="contact-form" value="name" />
                   </div>
                 )}
               />
@@ -84,7 +82,6 @@ function ContactForm(props) {
                       className="input"
                       placeholder="Enter email here."
                     />
-                    <input type="hidden" name="contact-form" value="email" />
                   </div>
                 )}
               />
@@ -109,7 +106,6 @@ function ContactForm(props) {
                       className="textarea"
                       placeholder="Enter message here."
                     />
-                    <input type="hidden" name="contact-form" value="message" />
                   </div>
                 )}
               />

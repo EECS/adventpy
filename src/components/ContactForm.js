@@ -16,14 +16,14 @@ function ContactForm(props) {
     <div className="columns is-mobile is-centered">
       <div className="column is-three-quarters">
         <form
+          name="contact-form"
           action="/contact-thanks"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
           onSubmit={() => {
-            //e.preventDefault()
             handleSubmit()
           }}
-          method="POST"
-          name="contact-form"
-          data-netlify="true"
         >
           <div className="field">
             <label className="label">Name</label>
@@ -31,13 +31,16 @@ function ContactForm(props) {
               <Field
                 name="name"
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    name="name"
-                    type="text"
-                    className="input"
-                    placeholder="Enter name here."
-                  />
+                  <div>
+                    <input
+                      {...field}
+                      name="name"
+                      type="text"
+                      className="input"
+                      placeholder="Enter name here."
+                    />
+                    <input type="hidden" name="contact-form" value="name" />
+                  </div>
                 )}
               />
               {touched.name && (
@@ -53,13 +56,16 @@ function ContactForm(props) {
               <Field
                 name="email"
                 render={({ field }) => (
-                  <input
-                    {...field}
-                    name="email"
-                    type="email"
-                    className="input"
-                    placeholder="Enter email here."
-                  />
+                  <div>
+                    <input
+                      {...field}
+                      name="email"
+                      type="email"
+                      className="input"
+                      placeholder="Enter email here."
+                    />
+                    <input type="hidden" name="contact-form" value="email" />
+                  </div>
                 )}
               />
             </div>
@@ -76,12 +82,15 @@ function ContactForm(props) {
               <Field
                 name="message"
                 render={({ field }) => (
-                  <textarea
-                    {...field}
-                    name="message"
-                    className="textarea"
-                    placeholder="Enter message here."
-                  />
+                  <div>
+                    <textarea
+                      {...field}
+                      name="message"
+                      className="textarea"
+                      placeholder="Enter message here."
+                    />
+                    <input type="hidden" name="contact-form" value="message" />
+                  </div>
                 )}
               />
             </div>

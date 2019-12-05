@@ -38,7 +38,7 @@ function ContactForm(props) {
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: encode({
                 "form-name": form.getAttribute("name"),
-                values: form.getElementsByTagName("input"),
+                "values-name": form.getElementsByTagName("input"),
               }),
             })
               .then(() => navigate(form.getAttribute("action")))

@@ -19,7 +19,7 @@ function ContactForm(props) {
           onSubmit={e => (e.preventDefault(), handleSubmit())}
           method="POST"
           name="contact-form"
-          netlify
+          data-netlify="true"
         >
           <div className="field">
             <label className="label">Name</label>

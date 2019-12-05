@@ -17,7 +17,7 @@ function encode(data) {
 }
 
 function ContactForm(props) {
-  const { isSubmitting, handleSubmit, touched } = props
+  const { isSubmitting, handleSubmit, touched, values } = props
 
   return (
     <div className="columns is-mobile is-centered">
@@ -32,12 +32,12 @@ function ContactForm(props) {
             e.preventDefault()
             handleSubmit()
             const form = e.target
-
             fetch("/", {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: encode({
                 "form-name": form.getAttribute("name"),
+                ...values,
               }),
             })
               .then(() => navigate(form.getAttribute("action")))

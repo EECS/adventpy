@@ -1,0 +1,97 @@
+---
+fullTitle: Algorithms - Breadth First Search
+seoTitle: Algorithms - Breadth First Search
+date: 2019-10-26
+description: >
+  Searching algorithm series, this post covers a tree searching algorithm,
+  known as breadth first search.
+tags: searching, bfs, breadth-first-search, python
+---
+
+# ALGORITHM:
+
+Let's talk about some tree searching and traversal algorithms. Our first discussion of
+tree traversal algorithms will begin with breadth-first-search (BFS) traversal of a tree.
+
+First, let's understand the tree structure that we are to be sorting. Each node that
+we add to the tree will be stored in a key-value dictionary, representing the edge
+that exists between the two nodes in the graph.
+
+Let's look at what a tree might look like:
+
+                   1
+              2         3
+            4   5    11   12
+
+In the the tree shown above, we can see that 1 is at it's root, and there are two
+subtrees below the root node in the tree.
+
+When we execute breadth first search on this tree, we want to print the value at the
+root node of a specific height in the tree, and then traverse and print all other nodes
+at the same height in the tree, prior to proceeding into deeper levels in the tree.
+
+We also will be traversing the tree in a left-to-right manner, so let's take a look
+at what we would expect the BFS traversal algorithm to print when it goes through
+this tree.
+
+        Output: 1, 2, 3, 4, 5, 11, 12
+
+As can be seen, we start at the root node of 1, and then we progress to the next lowest
+level in the tree and print all leaves at that level of the tree. In this instance,
+leaves 2 and 3 come next, before finishing our traversal at the bottom level of the tree.
+
+The code itself is not too difficult to understand so let's look at that next.
+A "Graph" class has been created for this problem as it allows us to add
+functionality, like depth first search, which will be discussed in future posts.
+
+# CODE:
+
+    class Graph:
+        def __init__(self):
+            self.graph = defaultdict(list)
+
+        def add_edge(self, v1, v2):
+            self.graph[v2].append(v1)
+            self.graph[v1].append(v2)
+
+        def BFS(self, source):
+            print("Breadth First Search:")
+
+            visited = [False] * len(self.graph)
+
+            # Create a queue for breadth first search
+            queue = []
+
+            queue.append(source)
+            visited[source] = True
+
+            while queue:
+                root = queue.pop(0)
+                print(root, end=" ")
+                # BFS searches all nodes that touch the root first.
+                # DFS will search all nodes that touch the root, prior to
+                # continuing to search the root node.
+                for node in self.graph[root]:
+                    if visited[node] == False:
+                        queue.append(node)
+                        visited[node] = True
+
+        def __str__(self):
+            return str(self.graph)
+
+We create our graph as a dictionary in python, and have given the "Graph" class a method
+"add_edge" that places an edge in the graph when called.
+
+The "BFS" method in the "Graph" class is where our breadth-first-search algorithm is implemented.
+This implementation relies upon a visited list to keep track of nodes that have already been
+visited, as well as a queue to track which nodes are to be visited next in the graph.
+
+As we traverse the tree, we place nodes in our queue if they have not been visited yet, and
+always traverse the direct leaves of our "root" node in the search prior to moving deeper
+into the tree, ensuring that nodes closer to the root of the tree are visited prior to nodes
+deeper in the tree.
+
+# CONCLUSION:
+
+This post talked about the breadth-first-search tree traversal algorithm. We will next
+see depth-first search, and how it's implementation differs from breath-first-search.

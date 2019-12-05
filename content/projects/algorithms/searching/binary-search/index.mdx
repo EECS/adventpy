@@ -1,0 +1,117 @@
+---
+fullTitle: Algorithms - Binary Search
+seoTitle: Algorithms - Binary Search
+date: 2019-10-24
+description: >
+  Searching algorithm series, this post covers the fundamental binary
+  search algorithm, a search algorithm that allows search in O(lg n)
+  time-complexity given a previously sorted list.
+tags: searching, sorted, python, binary-search, time-complexity
+---
+
+# ALGORITHM:
+
+To continue our algorithms series, let's now discuss a fundamental search algorithm, binary search.
+This will be the first search algorithm in our series, and really is a fundamental search algorithm
+that everyone should understand. Fortunately, it's not that difficult, so let's break down its workings.
+First, let's look at the time complexity of searching for the algorithm.
+
+# Time Complexity: Worst: O(lg<i>n</i>)
+
+The binary search algorithm, when applied to a list, has a worst-case time complexity of O(lg<i>n</i>). To
+achieve this search time complexity, it is assumed that the list to be searched has already been sorted.
+
+The binary search algorithm achieves this time complexity by eliminating half of the list that it searches
+at each search interval, deciding if the value at the searched index in the list is greater than, equal to
+or less than the value that we are searching for.
+
+Depending on the value in the list, we then only search the section of the list that could return the value
+that we are searching for. So, if the midpoint value is greater than the value we want to find, we would then
+only look at the beginning half of the list to determine if the searched value is in the list.
+
+The opposite is true of the midpoint value is less than the value we want to find. If so, we would then
+only look at the latter half of the list.
+
+Let's run through a small example of the workings of binary search to formalize these ideas.
+
+    Input List: [1, 2, 4, 6, 8, 10, 11]
+    Find Value: 10
+
+In this example, we have the list as shown above, and we want to find the value 10 in the list. Let's look at each
+respective pass of binary search.
+
+    Midpoint Index: 3
+    Midpoint Index Value: 6
+    Midpoint Index Value Compared to Searched Value: Less than (6 < 10)
+
+    Newly Searched List:
+    [6, 8, 10, 11]
+
+This first pass determines that our midpoint of the list is at index 3 of the list, where there is a value of 6 in the list.
+We see that 10 is greater than 6, so we only want to look at values greater than 6 in the input list as we will not
+find our searched value below 6 in the list.
+
+    List: [6, 8, 10, 11]
+    Midpoint Index Value: 8
+    Midpoint Index Value Compared to Searched Value: Less than (8 < 10)
+
+    Newly Searched List: [8, 10, 11]
+
+Again, we see that the value at the midpoint of the list is less than our searched value. So again we only search values in the
+list that are greater than our older value.
+
+    List: [8, 10, 11]
+    Midpoint Index Value: 10
+    Midpoint Index Value Compared to Searched Value: Equal to (10 = 10)
+
+    Return Index in original list (5)
+
+Finally, we see the value at our searched midpoint of the new list is equal to the value that we are searching for in the list.
+With the value found, we return the index in the list at which the value exists, and search terminates.
+
+We can now see the advantage that binary search presents, given a sorted list. Instead of checking all values in the list,
+we can choose a pivot point in the list to search against, and continuously shorten the size of the list that we search in
+order to potentially find our value in a quicker manner.
+
+Let's now check out the python code that implements binary search.
+
+# CODE:
+
+    def binary_search(arr, num):
+      '''
+      Perform binary search on a previously sorted array
+      arr (list) - Sorted list.
+      '''
+      start = 0
+      end = len(arr)-1
+
+      while end > start:
+          mid = ((end - start)//2) + start
+
+          if num == arr[mid]:
+              return mid
+          elif num > arr[mid]:
+              start = mid+1
+          else:
+              end = mid-1
+
+      return end if arr[end] == num else -1
+
+In the code above, we see that our binary_search function takes in two parameters, an array to be searched and number that
+we are searching for in that array. We then begin the binary search process, by picking a starting and ending index
+in the list that we use to determine the midpoint index in the list.
+
+Search continues while the staring index is less than the ending index. This implementation requires this condition because
+of the equation that sets the midpoint index. Because it uses integer division and updates the midpoint index during each
+pass by adding or subtracting 1 from the current midpoint index, it is possible that the end index variable is set to a value
+that is below the starting index variable.
+
+If this instance occurs, we want to finally check the value at the ending index of the array before determining if the value
+exists in the list.
+
+Other than that, this implementation is identical to the implementation described above.
+
+# CONCLUSION:
+
+This post talked about the binary search algorithm, a fundamental search algorithm with a simple python implementation.
+We will continue to discuss search algorithms in future posts.

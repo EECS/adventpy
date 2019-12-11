@@ -17,7 +17,7 @@ function encode(data) {
 }
 
 function ContactForm(props) {
-  const { isSubmitting, handleSubmit, touched, values } = props
+  const { isSubmitting, handleSubmit, touched, values, isValid } = props
 
   return (
     <div className="columns is-mobile is-centered">
@@ -30,18 +30,21 @@ function ContactForm(props) {
           data-netlify-honeypot="bot-field"
           onSubmit={e => {
             e.preventDefault()
-            handleSubmit()
-            const form = e.target
-            fetch("/", {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: encode({
-                "form-name": form.getAttribute("name"),
-                ...values,
-              }),
-            })
-              .then(() => navigate(form.getAttribute("action")))
-              .catch(error => console.error(error))
+            if(isValid){
+              handleSubmit()
+              const form = e.target
+              fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: encode({
+                  "form-name": form.getAttribute("name"),
+                  ...values,
+                }),
+              })
+                .then(() => navigate(form.getAttribute("action")))
+                .catch(error => console.error(error))
+            }
+            
           }}
         >
           <div className="field">

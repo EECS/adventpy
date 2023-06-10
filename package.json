@@ -14,7 +14,7 @@
     "algebra.js": "^0.2.6",
     "bulmaswatch": "^0.7.5",
     "formik": "^1.5.8",
-    "gatsby": "^2.13.73",
+    "gatsby": "^4.25.7",
     "gatsby-image": "^2.2.10",
     "gatsby-plugin-manifest": "^2.2.6",
     "gatsby-plugin-mdx": "^1.0.28",
